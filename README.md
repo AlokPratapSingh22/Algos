@@ -10,3 +10,7 @@ Algorithms (for Coding Interview)
 - [**Finite Automata Method**](String%20Matching%20Algorithms/FAMatchingMethod.md)
 - [**Rabin-Karp Method**](String%20Matching%20Algorithms/RabinKarpAlgo.md)
 - [**Knuth-Morris-Pratt Algoritm**](String%20Matching%20Algorithms/KMAlgo.md)
+
+## Number Theory
+
+- ### [Primality Test](NumberTheory/PrimalityTest.md)
