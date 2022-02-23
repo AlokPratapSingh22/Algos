@@ -165,4 +165,140 @@ def isPrime( n, k):
 
 ---
 
-## 4. Solovay-Strassen Method
+## 4. Solovay-Strassen Method _(Probalistic)_
+
+### Legendre Symbol:
+
+for pair of integers 'a' and 'p', such that p is prime, denoted by (a/p) and calculated as
+
+(a/p) = 0 ; if a%p = 0  
+(a/p) = 1 ; if there exists an integer k such that k^2 = a mod p  
+(a/p) = -1 ; otherwise
+
+### Jacobian Symbol:
+
+generalization of legendre symbol, where p is replaced by n, where n is
+
+> n = p1k1*......*pnkn
+
+then the jacobian symbol is defined as
+
+> (a/n) = ((a/p1)^k1)\*...........\*((a/pn)^kn)
+
+These symbols have certain properties -
+
+- If gcd(a,n)!=0 then (a/n)=0
+- (ab/n) = (a/n)\*(b/n). It can be easily derived from the fact (ab/p)=(a/p)(b/p)
+- If a is even, then (a/n)=(2/n)\*((a/2)/n)
+- (a/n)=(n/a)\*(-1)^((a-1)(n-1)/4) if a and n are both odd
+
+### Algo
+
+**Complexity = O(k log^3(n))**
+
+BEGIN
+
+a. Jacobian -
+
+- //base cases omitted
+- IF a>n then,  
+  return (a mod n)/n
+- else,  
+  return (-1)^((a-1)/2)((n-1)/2) \* (a/n)
+
+b. Solovay-Strassen -
+
+- Pick a random element a≺n
+- IF gcd(a,n) ≻ 1 then return COMPOSITE
+- end IF
+- compute a^(n-1)/2 using repeated squaring and (a/n) using Jacobian algorihtm.
+- If (a/n) not equal to a^(n-1)/2 then,  
+  return COMPOSITE
+- else return PRIME
+- end IF
+
+END
+
+### Code
+
+```Python
+import random
+
+
+def modulo(base, exponent, mod):
+    x = 1
+    y = base
+    while (exponent > 0):
+        if (exponent % 2 == 1):
+            x = (x * y) % mod
+
+        y = (y * y) % mod
+        exponent = exponent // 2
+
+    return x % mod
+
+
+def calculateJacobian(a, p):
+    if (a == 0):
+        return 0  # (0/n) = 0
+
+    ans = 1
+    if (a < 0):
+        # (a/n) = (-a/n)*(-1/n)
+        a = -a
+        if (n % 4 == 3):
+            # (-1/n) = -1 if n = 3 (mod 4)
+            ans = -ans
+
+    if (a == 1):
+        return ans  # (1/n) = 1
+
+    while (a):
+        if (a < 0):
+            # (a/n) = (-a/n)*(-1/n)
+            a = -a
+            if (n % 4 == 3):
+                # (-1/n) = -1 if n = 3 (mod 4)
+                ans = -ans
+
+        while (a % 2 == 0):
+            a = a // 2
+            if (n % 8 == 3 or n % 8 == 5):
+                ans = -ans
+
+        # swap
+        a, n = n, a
+
+        if (a % 4 == 3 and n % 4 == 3):
+            ans = -ans
+        a = a % n
+
+        if (a > n // 2):
+            a = a - n
+
+    if (n == 1):
+        return ans
+
+    return 0
+
+
+def solovoyStrassen(p, iterations):
+
+    if (p < 2):
+        return False
+    if (p != 2 and p % 2 == 0):
+        return False
+
+    for _ in range(iterations):
+
+        # Generate a random number a
+        a = random.randrange(p - 1) + 1
+        jacobian = (p + calculateJacobian(a, p)) % p
+        mod = modulo(a, (p - 1) / 2, p)
+
+        if (jacobian == 0 or mod != jacobian):
+            return False
+
+    return True
+
+```
