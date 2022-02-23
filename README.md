@@ -14,3 +14,4 @@ Algorithms (for Coding Interview)
 ## Number Theory
 
 - ### [Primality Test](NumberTheory/PrimalityTest.md)
+- ### [Sieve of Erastothenes](NumberTheory/SieveOfEratosthenes.md)
