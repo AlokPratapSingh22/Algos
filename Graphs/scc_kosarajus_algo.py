@@ -27,7 +27,7 @@ def print_all_sccs(graph, n):
 				graph_t[neigh] = []
 			graph_t[neigh].append(i)
 
-	# Step 3: DFS
+	# Step 3: DFS in reverse direction using transposes graph
 	vis = []
 	
 	def dfs(node, ans):
