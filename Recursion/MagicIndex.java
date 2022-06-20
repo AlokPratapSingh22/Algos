@@ -53,7 +53,7 @@ public class MagicIndex {
     }
 
     public static int findMagicIndex_duplicates(int[] arr) {
-        return findMagicIndex_duplicates(arr, 0, arr.length - 1);
+        return findMagicIndex_duplicates(arr, 0, arr.length);
     }
 
     private static int findMagicIndex_duplicates(int[] arr, int start, int end) {
